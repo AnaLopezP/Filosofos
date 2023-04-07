@@ -1,4 +1,6 @@
 from guizero import *
 
 app = App(title = "Prueba")
-app.display
+menjase = Text(app, text = "Holiwis")
+name = TextBox(app)
+app.display()

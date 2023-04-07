@@ -7,7 +7,7 @@ class Filosofo(threading.Thread):
         threading.Thread.__init__(self) #Creamos un hilo
         self.tenedor = tenedor
         self.num = num #Número de filósofo
-        #self.temp = self.num + 1%5
+        self.temp = self.num + 1%5
 
     def comer(self):
         print("El filósofo " + str(self.num) + " come.")

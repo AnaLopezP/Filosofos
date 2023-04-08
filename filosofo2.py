@@ -22,6 +22,7 @@ class filosofo(threading.Thread):
 
     def __del__(self):
         print("FILOSOFO {0} - Se para de la mesa".format(self.id))  #NECESARIO PARA SABER CUANDO TERMINA EL THREAD
+        
 
     def pensar(self):
         time.sleep(random.randint(0,5)) #CADA FILOSOFO SE TOMA DISTINTO TIEMPO PARA PENSAR, ALEATORIO
@@ -97,13 +98,20 @@ ten3 = crear_texto(frame, "3", "gray", 3, 4)
 ten4 = crear_texto(frame, "4", "gray", 2, 5)
 ten5 = crear_texto(frame, "5", "gray", 1, 4)
 
+log = Entry(frame, width= 100)
+log.grid(column= 4, row = 3)
+log.insert(index = 1, string= "Aqui tiene que poner lo que haya en el terminal")
+
 iniciar = Button(frame, text= "INICIAR", command= main)
 iniciar.grid(column= 2, row=7)
 
+finalizar = Button(frame, text= "SALIR", command= root.destroy)
+finalizar.grid(column= 4, row=7)
+
 root.mainloop()
 
-def cambiar_color(fil, color):
-    Canvas.itemconfigure(fil, fill = color)
+'''def cambiar_color(fil, color):
+    Canvas.itemconfigure(fil, fill = color)'''
 
 '''def hola():
     for i in filosofo.estado:

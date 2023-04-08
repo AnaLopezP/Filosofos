@@ -22,6 +22,9 @@ class filosofo(threading.Thread):
 
     def __del__(self):
         print("FILOSOFO {0} - Se para de la mesa".format(self.id))  #NECESARIO PARA SABER CUANDO TERMINA EL THREAD
+
+    def __str__(self):
+        return "FILOSOFO {0} " + str(filosofo.estado)
         
 
     def pensar(self):
@@ -71,17 +74,21 @@ def main():
 
     for f in lista:
         f.start() #ES EQUIVALENTE A RUN()
+        log.insert(index = 1, string= filosofo.__str__(filosofo))
 
     for f in lista:
         f.join() #BLOQUEA HASTA QUE TERMINA EL THREAD
     
 
 
-
+def cerrar_ventana():
+    root.destroy()
+    
 
 def crear_texto(ventana, texto, color, poscol, posfil):
     a = Label(ventana, text = texto, bg = color).grid(column= poscol, row = posfil)
     return a
+
 
 
 root = Tk()
@@ -100,12 +107,12 @@ ten5 = crear_texto(frame, "5", "gray", 1, 4)
 
 log = Entry(frame, width= 100)
 log.grid(column= 4, row = 3)
-log.insert(index = 1, string= "Aqui tiene que poner lo que haya en el terminal")
+log.insert(index = 1, string= filosofo.__str__(filosofo))
 
 iniciar = Button(frame, text= "INICIAR", command= main)
 iniciar.grid(column= 2, row=7)
 
-finalizar = Button(frame, text= "SALIR", command= root.destroy)
+finalizar = Button(frame, text= "SALIR", command= cerrar_ventana)
 finalizar.grid(column= 4, row=7)
 
 root.mainloop()

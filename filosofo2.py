@@ -99,11 +99,11 @@ def rectangulo(y, color):
     return jj
 
 
-
+#CREO LA VENTANA
 root = Tk()
 root.geometry("800x600+560+240")
-'''frame = Frame(root)
-frame.place(x=100, y=50)'''
+
+#CREO LAS ETIQUETAS DE LOS FILOSOFOS Y LOS TENEDORES QUE IRÁN CAMBIANDO DE COLOR
 fil1 = crear_texto(root, "Filosofo1", "white", 150, 20)
 fil2 = crear_texto(root, "Filosofo2", "white", 250, 80)
 fil3 = crear_texto(root, "Filosofo3", "white", 250, 160)
@@ -115,6 +115,7 @@ ten3 = crear_texto(root, "3", "gray", 210, 160)
 ten4 = crear_texto(root, "4", "gray", 100, 120)
 ten5 = crear_texto(root, "5", "gray", 100, 30)
 
+#CREO LOS RECTÁNGULOS DE LA LEYENDA
 a = rectangulo(20, "blue")
 b = rectangulo(50, "pink")
 c = rectangulo(80, "green")
@@ -122,8 +123,20 @@ d = rectangulo(110, "yellow")
 e = rectangulo(140, "white")
 f = rectangulo(170, "gray")
 
+#CREO LA LEYENDA
+texa = Label(root, text= "Tenedor ocupado").place(x = 555, y = 20)
+texb = Label(root, text= "Filósofo entra").place(x = 555, y = 50)
+texc = Label(root, text= "Filósofo con 1 tenedor").place(x = 555, y = 80)
+texd = Label(root, text= "Filósofo comiendo").place(x = 555, y = 110)
+texe = Label(root, text= "Filósofo pensando").place(x = 555, y = 140)
+texf = Label(root, text= "Tenedor libre").place(x = 555, y = 170)
+
+
+#CREO EL RECUADRO DONDE ESTARÁ EL LOG
 scroll = sc.ScrolledText(root, width = 50, height = 15)
 scroll.place(x = 10, y = 300)
+
+#CREO LA RECOPILACIÓN DE CUÁNTAS VECES COME CADA UNO
 reg = Label(root, text = "Cuántas veces come cada uno")
 reg.place(x = 500, y =300)
 f1 = Label(root, text= "Filósofo 1").place(x = 500, y = 330)
@@ -138,8 +151,7 @@ e3 = Entry(root).place(x = 600, y = 390)
 e4 = Entry(root).place(x = 600, y = 420)
 e5 = Entry(root).place(x = 600, y = 450)
 
-'''frame2 = Frame(root)
-frame2.place(x = 100, y = 100)'''
+#CREO LOS BOTONES DE INICAR Y QUITAR
 iniciar = Button(root, text= "INICIAR", command= main)
 iniciar.place(x = 150, y = 250)
 iniciar.config(font= ("Verdana", 12))
@@ -149,12 +161,6 @@ finalizar = Button(root, text= "SALIR", command= cerrar_ventana)
 finalizar.place(x = 300,  y = 250)
 finalizar.config(font= ("Verdana", 12))
 
-texa = Label(root, text= "Tenedor ocupado").place(x = 555, y = 20)
-texb = Label(root, text= "Filósofo entra").place(x = 555, y = 50)
-texc = Label(root, text= "Filósofo con 1 tenedor").place(x = 555, y = 80)
-texd = Label(root, text= "Filósofo comiendo").place(x = 555, y = 110)
-texe = Label(root, text= "Filósofo pensando").place(x = 555, y = 140)
-texf = Label(root, text= "Tenedor libre").place(x = 555, y = 170)
 
 root.mainloop()
 

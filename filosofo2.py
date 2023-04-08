@@ -3,6 +3,8 @@ import time
 import random
 import threading
 from tkinter import *
+from tkinter import scrolledtext as sc
+
 N = 5
 TIEMPO_TOTAL = 3
 
@@ -86,7 +88,7 @@ def cerrar_ventana():
 
 def crear_texto(ventana, texto, color, poscol, posfil):
     a = Label(ventana, text = texto, bg = color)
-    a.grid(column= poscol, row = posfil)
+    a.place(x = poscol, y = posfil)
     a.config(font= ("Verdana", 16))
     return a
 
@@ -100,18 +102,18 @@ def rectangulo(y, color):
 
 root = Tk()
 root.geometry("800x600+560+240")
-frame = Frame(root)
-frame.place(x=100, y=50)
-fil1 = crear_texto(frame, "Filosofo1", "white", 2, 2)
-fil2 = crear_texto(frame, "Filosofo2", "white", 3, 3)
-fil3 = crear_texto(frame, "Filosofo3", "white", 3, 5)
-fil4 = crear_texto(frame, "Filosofo4", "white", 1, 5)
-fil5 = crear_texto(frame, "Filosofo5", "white", 1, 3)
-ten1 = crear_texto(frame, "1", "gray", 1, 2)
-ten2 = crear_texto(frame, "2", "gray", 3, 2)
-ten3 = crear_texto(frame, "3", "gray", 3, 4)
-ten4 = crear_texto(frame, "4", "gray", 2, 5)
-ten5 = crear_texto(frame, "5", "gray", 1, 4)
+'''frame = Frame(root)
+frame.place(x=100, y=50)'''
+fil1 = crear_texto(root, "Filosofo1", "white", 150, 20)
+fil2 = crear_texto(root, "Filosofo2", "white", 250, 80)
+fil3 = crear_texto(root, "Filosofo3", "white", 250, 160)
+fil4 = crear_texto(root, "Filosofo4", "white", 100, 160)
+fil5 = crear_texto(root, "Filosofo5", "white", 50, 80)
+ten1 = crear_texto(root, "1", "gray", 300, 30)
+ten2 = crear_texto(root, "2", "gray", 300, 120)
+ten3 = crear_texto(root, "3", "gray", 210, 160)
+ten4 = crear_texto(root, "4", "gray", 100, 120)
+ten5 = crear_texto(root, "5", "gray", 100, 30)
 
 a = rectangulo(20, "blue")
 b = rectangulo(50, "pink")
@@ -120,6 +122,21 @@ d = rectangulo(110, "yellow")
 e = rectangulo(140, "white")
 f = rectangulo(170, "gray")
 
+scroll = sc.ScrolledText(root, width = 50, height = 15)
+scroll.place(x = 10, y = 300)
+reg = Label(root, text = "Cuántas veces come cada uno")
+reg.place(x = 500, y =300)
+f1 = Label(root, text= "Filósofo 1").place(x = 500, y = 330)
+f2 = Label(root, text= "Filósofo 2").place(x = 500, y = 360)
+f3 = Label(root, text= "Filósofo 3").place(x = 500, y = 390)
+f4 = Label(root, text= "Filósofo 4").place(x = 500, y = 420)
+f5 = Label(root, text= "Filósofo 5").place(x = 500, y = 450)
+
+e1 = Entry(root).place(x = 600, y = 330)
+e2 = Entry(root).place(x = 600, y = 360)
+e3 = Entry(root).place(x = 600, y = 390)
+e4 = Entry(root).place(x = 600, y = 420)
+e5 = Entry(root).place(x = 600, y = 450)
 
 '''frame2 = Frame(root)
 frame2.place(x = 100, y = 100)'''

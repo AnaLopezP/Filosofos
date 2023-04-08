@@ -6,9 +6,6 @@ from tkinter import *
 N = 5
 TIEMPO_TOTAL = 3
 
-
-
-
 class filosofo(threading.Thread):
     semaforo = threading.Lock() #SEMAFORO BINARIO ASEGURA LA EXCLUSION MUTUA
     estado = [] #PARA CONOCER EL ESTADO DE CADA FILOSOFO
@@ -78,10 +75,8 @@ def main():
 
     for f in lista:
         f.start() #ES EQUIVALENTE A RUN()
-        log.insert(index = 1, string= filosofo.__str__(filosofo))
 
-    for f in lista:
-        f.join() #BLOQUEA HASTA QUE TERMINA EL THREAD
+
     
 
 
@@ -90,19 +85,23 @@ def cerrar_ventana():
     
 
 def crear_texto(ventana, texto, color, poscol, posfil):
-    a = Label(ventana, text = texto, bg = color).grid(column= poscol, row = posfil)
+    a = Label(ventana, text = texto, bg = color)
+    a.grid(column= poscol, row = posfil)
+    a.config(font= ("Verdana", 16))
     return a
 
-def escribir():
-    i = 1
-    while True:
-        log.insert(index = i, string = "hry")
-        i = i+1
+def rectangulo(y, color):
+    jj = Canvas(width= 50, height= 25, background="white")
+    jj.place(x = 500, y = y)
+    jj.create_rectangle(0, 0, 50, 25, fill = color)
+    return jj
+
 
 
 root = Tk()
+root.geometry("800x600+560+240")
 frame = Frame(root)
-frame.grid(column=60, row=40)
+frame.place(x=100, y=50)
 fil1 = crear_texto(frame, "Filosofo1", "white", 2, 2)
 fil2 = crear_texto(frame, "Filosofo2", "white", 3, 3)
 fil3 = crear_texto(frame, "Filosofo3", "white", 3, 5)
@@ -114,19 +113,31 @@ ten3 = crear_texto(frame, "3", "gray", 3, 4)
 ten4 = crear_texto(frame, "4", "gray", 2, 5)
 ten5 = crear_texto(frame, "5", "gray", 1, 4)
 
-log = Entry(frame, width= 100)
-log.grid(column= 4, row = 3)
-#log.insert(index = 1, string= filosofo.__str__(filosofo))
+a = rectangulo(20, "blue")
+b = rectangulo(50, "pink")
+c = rectangulo(80, "green")
+d = rectangulo(110, "yellow")
+e = rectangulo(140, "white")
+f = rectangulo(170, "gray")
 
 
-iniciar = Button(frame, text= "INICIAR", command= main)
-iniciar.grid(column= 2, row=7)
+'''frame2 = Frame(root)
+frame2.place(x = 100, y = 100)'''
+iniciar = Button(root, text= "INICIAR", command= main)
+iniciar.place(x = 150, y = 250)
+iniciar.config(font= ("Verdana", 12))
 
 
-finalizar = Button(frame, text= "SALIR", command= cerrar_ventana)
-finalizar.grid(column= 4, row=7)
+finalizar = Button(root, text= "SALIR", command= cerrar_ventana)
+finalizar.place(x = 300,  y = 250)
+finalizar.config(font= ("Verdana", 12))
 
-
+texa = Label(root, text= "Tenedor ocupado").place(x = 555, y = 20)
+texb = Label(root, text= "Filósofo entra").place(x = 555, y = 50)
+texc = Label(root, text= "Filósofo con 1 tenedor").place(x = 555, y = 80)
+texd = Label(root, text= "Filósofo comiendo").place(x = 555, y = 110)
+texe = Label(root, text= "Filósofo pensando").place(x = 555, y = 140)
+texf = Label(root, text= "Tenedor libre").place(x = 555, y = 170)
 
 root.mainloop()
 

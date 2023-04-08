@@ -1,28 +1,31 @@
 from tkinter import *
 
+def rectangulo(y, color):
+    jj = Canvas(width= 50, height= 25, background="white")
+    jj.place(x = 200, y = y)
+    jj.create_rectangle(0, 0, 50, 25, fill = color)
+    return jj
 
-def crear_texto(ventana, texto, color, poscol, posfil):
-    a = Label(ventana, text = texto, bg = color).grid(column= poscol, row = posfil)
-    return a
+
 
 root = Tk()
-frame = Frame(root)
-frame.grid(column=60, row=40)
-fil1 = crear_texto(frame, "Filosofo1", "white", 2, 2)
-fil2 = crear_texto(frame, "Filosofo2", "white", 3, 3)
-fil3 = crear_texto(frame, "Filosofo3", "white", 3, 5)
-fil4 = crear_texto(frame, "Filosofo4", "white", 1, 5)
-fil5 = crear_texto(frame, "Filosofo5", "white", 1, 3)
-ten1 = crear_texto(frame, "1", "gray", 1, 2)
-ten2 = crear_texto(frame, "2", "gray", 3, 2)
-ten3 = crear_texto(frame, "3", "gray", 3, 4)
-ten4 = crear_texto(frame, "4", "gray", 2, 5)
-ten5 = crear_texto(frame, "5", "gray", 1, 4)
+root.geometry("800x600+560+240")
+frame= Frame(root)
 
-entry = Entry(frame)
-entry.grid(column=4, row= 4)
-entry.insert(index= 1, string = "fjdoifju")
+
+dsd = Button(text = "odjshfjjs")
+dsd.grid(column=3, row= 3)
+
+
+a = rectangulo(20, "blue")
+b = rectangulo(50, "pink")
+c = rectangulo(80, "green")
+d = rectangulo(110, "yellow")
+e = rectangulo(140, "white")
+f = rectangulo(170, "gray")
+
 
 root.mainloop()
+
 
 

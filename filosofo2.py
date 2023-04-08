@@ -6,11 +6,15 @@ from tkinter import *
 N = 5
 TIEMPO_TOTAL = 3
 
+
+
+
 class filosofo(threading.Thread):
     semaforo = threading.Lock() #SEMAFORO BINARIO ASEGURA LA EXCLUSION MUTUA
     estado = [] #PARA CONOCER EL ESTADO DE CADA FILOSOFO
     tenedores = [] #ARRAY DE SEMAFOROS PARA SINCRONIZAR ENTRE FILOSOFOS, MUESTRA QUIEN ESTA EN COLA DEL TENEDOR
     count=0
+    
 
     def __init__(self):
         super().__init__()      #HERENCIA
@@ -19,12 +23,9 @@ class filosofo(threading.Thread):
         filosofo.estado.append('PENSANDO') #EL FILOSOFO ENTRA A LA MESA EN ESTADO PENSANDO
         filosofo.tenedores.append(threading.Semaphore(0)) #AGREGA EL SEMAFORO DE SU TENEDOR( TENEDOR A LA IZQUIERDA)
         print("FILOSOFO {0} - PENSANDO".format(self.id))
-
+        
     def __del__(self):
         print("FILOSOFO {0} - Se para de la mesa".format(self.id))  #NECESARIO PARA SABER CUANDO TERMINA EL THREAD
-
-    def __str__(self):
-        return "FILOSOFO {0} " + str(filosofo.estado)
         
 
     def pensar(self):
@@ -40,7 +41,7 @@ class filosofo(threading.Thread):
         if filosofo.estado[i] == 'HAMBRIENTO' and filosofo.estado[self.izquierda(i)] != 'COMIENDO' and filosofo.estado[self.derecha(i)] != 'COMIENDO':
             filosofo.estado[i]='COMIENDO'
             filosofo.tenedores[i].release()  #SI SUS VECINOS NO ESTAN COMIENDO AUMENTA EL SEMAFORO DEL TENEDOR Y CAMBIA SU ESTADO A COMIENDO
-
+        
     def tomar(self):
         filosofo.semaforo.acquire() #SEÑALA QUE TOMARA LOS TENEDORES (EXCLUSION MUTUA)
         filosofo.estado[self.id] = 'HAMBRIENTO'
@@ -51,12 +52,14 @@ class filosofo(threading.Thread):
     def soltar(self):
         filosofo.semaforo.acquire() #SEÑALA QUE SOLTARA LOS TENEDORES
         filosofo.estado[self.id] = 'PENSANDO'
+        #cambiar_color(self.id, "white")
         self.verificar(self.izquierda(self.id))
         self.verificar(self.derecha(self.id))
         filosofo.semaforo.release() #YA TERMINO DE MANIPULAR TENEDORES
 
     def comer(self):
         print("FILOSOFO {} COMIENDO".format(self.id))
+        #cambiar_color(self.id, "yellow")
         time.sleep(2) #TIEMPO ARBITRARIO PARA COMER
         print("FILOSOFO {} TERMINO DE COMER".format(self.id))
 
@@ -68,6 +71,7 @@ class filosofo(threading.Thread):
             self.soltar() #SUELTA LOS TENEDORES
 
 def main():
+    
     lista=[]
     for i in range(N):
         lista.append(filosofo()) #AGREGA UN FILOSOFO A LA LISTA
@@ -89,6 +93,11 @@ def crear_texto(ventana, texto, color, poscol, posfil):
     a = Label(ventana, text = texto, bg = color).grid(column= poscol, row = posfil)
     return a
 
+def escribir():
+    i = 1
+    while True:
+        log.insert(index = i, string = "hry")
+        i = i+1
 
 
 root = Tk()
@@ -107,24 +116,21 @@ ten5 = crear_texto(frame, "5", "gray", 1, 4)
 
 log = Entry(frame, width= 100)
 log.grid(column= 4, row = 3)
-log.insert(index = 1, string= filosofo.__str__(filosofo))
+#log.insert(index = 1, string= filosofo.__str__(filosofo))
+
 
 iniciar = Button(frame, text= "INICIAR", command= main)
 iniciar.grid(column= 2, row=7)
 
+
 finalizar = Button(frame, text= "SALIR", command= cerrar_ventana)
 finalizar.grid(column= 4, row=7)
 
+
+
 root.mainloop()
 
-'''def cambiar_color(fil, color):
-    Canvas.itemconfigure(fil, fill = color)'''
-
-'''def hola():
-    for i in filosofo.estado:
-        if filosofo.estado[i] == 'PENSANDO':
-            '''
 
 
-'''if __name__=="__main__":
-    main()'''
+
+

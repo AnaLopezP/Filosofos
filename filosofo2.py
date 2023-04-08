@@ -6,32 +6,11 @@ from tkinter import *
 N = 5
 TIEMPO_TOTAL = 3
 
-def crear_texto(ventana, texto, color, poscol, posfil):
-    a = Label(ventana, text = texto, bg = color).grid(column= poscol, row = posfil)
-    return a
-
 class filosofo(threading.Thread):
     semaforo = threading.Lock() #SEMAFORO BINARIO ASEGURA LA EXCLUSION MUTUA
     estado = [] #PARA CONOCER EL ESTADO DE CADA FILOSOFO
     tenedores = [] #ARRAY DE SEMAFOROS PARA SINCRONIZAR ENTRE FILOSOFOS, MUESTRA QUIEN ESTA EN COLA DEL TENEDOR
     count=0
-    root = Tk()
-    frame = Frame(root)
-    frame.grid(column=60, row=40)
-    fil1 = crear_texto(frame, "Filosofo1", "white", 2, 2)
-    fil2 = crear_texto(frame, "Filosofo2", "white", 3, 3)
-    fil3 = crear_texto(frame, "Filosofo3", "white", 3, 5)
-    fil4 = crear_texto(frame, "Filosofo4", "white", 1, 5)
-    fil5 = crear_texto(frame, "Filosofo5", "white", 1, 3)
-    ten1 = crear_texto(frame, "1", "gray", 1, 2)
-    ten2 = crear_texto(frame, "2", "gray", 3, 2)
-    ten3 = crear_texto(frame, "3", "gray", 3, 4)
-    ten4 = crear_texto(frame, "4", "gray", 2, 5)
-    ten5 = crear_texto(frame, "5", "gray", 1, 4)
-    entry = Entry(frame)
-    entry.grid(column=4, row= 4)
-     
-    root.mainloop()
 
     def __init__(self):
         super().__init__()      #HERENCIA
@@ -43,7 +22,6 @@ class filosofo(threading.Thread):
 
     def __del__(self):
         print("FILOSOFO {0} - Se para de la mesa".format(self.id))  #NECESARIO PARA SABER CUANDO TERMINA EL THREAD
-        self.entry.insert(index= 1, string="FILOSOFO {0} - Se para de la mesa".format(self.id) )
 
     def pensar(self):
         time.sleep(random.randint(0,5)) #CADA FILOSOFO SE TOMA DISTINTO TIEMPO PARA PENSAR, ALEATORIO
@@ -97,15 +75,32 @@ def main():
         f.join() #BLOQUEA HASTA QUE TERMINA EL THREAD
     
 
-if __name__=="__main__":
-    main()
 
 
 
+def crear_texto(ventana, texto, color, poscol, posfil):
+    a = Label(ventana, text = texto, bg = color).grid(column= poscol, row = posfil)
+    return a
 
 
+root = Tk()
+frame = Frame(root)
+frame.grid(column=60, row=40)
+fil1 = crear_texto(frame, "Filosofo1", "white", 2, 2)
+fil2 = crear_texto(frame, "Filosofo2", "white", 3, 3)
+fil3 = crear_texto(frame, "Filosofo3", "white", 3, 5)
+fil4 = crear_texto(frame, "Filosofo4", "white", 1, 5)
+fil5 = crear_texto(frame, "Filosofo5", "white", 1, 3)
+ten1 = crear_texto(frame, "1", "gray", 1, 2)
+ten2 = crear_texto(frame, "2", "gray", 3, 2)
+ten3 = crear_texto(frame, "3", "gray", 3, 4)
+ten4 = crear_texto(frame, "4", "gray", 2, 5)
+ten5 = crear_texto(frame, "5", "gray", 1, 4)
 
+iniciar = Button(frame, text= "INICIAR", command= main)
+iniciar.grid(column= 2, row=7)
 
+root.mainloop()
 
 def cambiar_color(fil, color):
     Canvas.itemconfigure(fil, fill = color)
@@ -116,3 +111,5 @@ def cambiar_color(fil, color):
             '''
 
 
+'''if __name__=="__main__":
+    main()'''

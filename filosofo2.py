@@ -12,9 +12,19 @@ class filosofo(threading.Thread):
     semaforo = threading.Lock() #SEMAFORO BINARIO ASEGURA LA EXCLUSION MUTUA
     estado = [] #PARA CONOCER EL ESTADO DE CADA FILOSOFO
     tenedores = [] #ARRAY DE SEMAFOROS PARA SINCRONIZAR ENTRE FILOSOFOS, MUESTRA QUIEN ESTA EN COLA DEL TENEDOR
+    labelTenedores = []
     count=0
     label = Label
+    labelten = Label
     
+    def getLabel(self):
+        return self.label
+    
+    def setLabel(self, label):
+        self.label = label
+
+    def setLabelten(self, labelten):
+        self.labelten = labelten
 
     def __init__(self):
         super().__init__()      #HERENCIA
@@ -42,6 +52,8 @@ class filosofo(threading.Thread):
         if filosofo.estado[i] == 'HAMBRIENTO' and filosofo.estado[self.izquierda(i)] != 'COMIENDO' and filosofo.estado[self.derecha(i)] != 'COMIENDO':
             filosofo.estado[i]='COMIENDO'
             filosofo.tenedores[i].release()  #SI SUS VECINOS NO ESTAN COMIENDO AUMENTA EL SEMAFORO DEL TENEDOR Y CAMBIA SU ESTADO A COMIENDO
+            self.labelten[i].config(bg = "gray")
+            
         
     def tomar(self):
         filosofo.semaforo.acquire() #SEÑALA QUE TOMARA LOS TENEDORES (EXCLUSION MUTUA)
@@ -50,7 +62,7 @@ class filosofo(threading.Thread):
         self.verificar(self.id) #VERIFICA SUS VECINOS, SI NO PUEDE COMER NO SE BLOQUEARA EN EL SIGUIENTE ACQUIRE
         filosofo.semaforo.release() #SEÑALA QUE YA DEJO DE INTENTAR TOMAR LOS TENEDORES (CAMBIAR EL ARRAY ESTADO)
         filosofo.tenedores[self.id].acquire() #SOLO SI PODIA TOMARLOS SE BLOQUEARA CON ESTADO COMIENDO
-        
+        self.labelten[self.id].config(bg = "blue")
 
     def soltar(self):
         filosofo.semaforo.acquire() #SEÑALA QUE SOLTARA LOS TENEDORES
@@ -71,41 +83,62 @@ class filosofo(threading.Thread):
     def run(self):  
         for i in range(TIEMPO_TOTAL):
             self.pensar() #EL FILOSOFO PIENSA
+            print("Tras pensar labelten es: " + str(self.labelten))
             self.tomar() #AGARRA LOS TENEDORES CORRESPONDIENTES
+            print("Tras tomar labelten es: " + str(self.labelten))
             self.comer() #COME
+            print("Tras comer labelten es: " + str(self.labelten))
             self.soltar() #SUELTA LOS TENEDORES
-
+            print("Tras soltar labelten es: " + str(self.labelten))
 
 
 def main():
-    
+    #ten1 = crear_texto(root, "1", "gray", 300, 30)
+    #ten2 = crear_texto(root, "2", "gray", 300, 120)
+    #ten3 = crear_texto(root, "3", "gray", 210, 160)
+    #ten4 = crear_texto(root, "4", "gray", 100, 120)
+    #ten5 = crear_texto(root, "5", "gray", 100, 30)
     lista=[]
+    listaten = []
     socrates = filosofo()
     fil1 = crear_texto(root, "Socrates", "pink", 150, 20)
+    ten1 = crear_texto(root, "1", "gray", 300, 30)
     socrates.setLabel(fil1)
+    listaten.append(ten1)
     lista.append(socrates) #AGREGA UN FILOSOFO A LA LISTA
 
     platon = filosofo()
     fil2 = crear_texto(root, "Platón", "pink", 250, 80)
+    ten2 = crear_texto(root, "2", "gray", 300, 120)
     platon.setLabel(fil2)
+    listaten.append(ten2)
     lista.append(platon)
 
     aristoteles = filosofo()
     fil3 = crear_texto(root, "Aristóteles", "pink", 250, 160)
+    ten3 = crear_texto(root, "3", "gray", 210, 160)
+    listaten.append(ten3)
     aristoteles.setLabel(fil3)
     lista.append(aristoteles)
 
     descartes = filosofo()
     fil4 = crear_texto(root, "Descartes", "pink", 100, 160)
+    ten4 = crear_texto(root, "4", "gray", 100, 120)
+    listaten.append(ten4)
     descartes.setLabel(fil4)
     lista.append(descartes)
 
     marx = filosofo()
     fil5 = crear_texto(root, "Marx", "pink", 50, 80)
+    ten5 = crear_texto(root, "5", "gray", 100, 30)
+    listaten.append(ten5)
     marx.setLabel(fil5)
     lista.append(marx)
 
+    set
+
     for f in lista:
+        f.setLabelten(listaten)
         f.start() #ES EQUIVALENTE A RUN()
 
 
@@ -132,12 +165,6 @@ root = Tk()
 root.geometry("800x600+560+240")
 
 #CREO LAS ETIQUETAS DE LOS FILOSOFOS Y LOS TENEDORES QUE IRÁN CAMBIANDO DE COLOR
-ten1 = crear_texto(root, "1", "gray", 300, 30)
-ten2 = crear_texto(root, "2", "gray", 300, 120)
-ten3 = crear_texto(root, "3", "gray", 210, 160)
-ten4 = crear_texto(root, "4", "gray", 100, 120)
-ten5 = crear_texto(root, "5", "gray", 100, 30)
-
 #CREO LOS RECTÁNGULOS DE LA LEYENDA
 a = rectangulo(20, "blue")
 b = rectangulo(50, "pink")

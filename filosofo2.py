@@ -13,6 +13,7 @@ class filosofo(threading.Thread):
     estado = [] #PARA CONOCER EL ESTADO DE CADA FILOSOFO
     tenedores = [] #ARRAY DE SEMAFOROS PARA SINCRONIZAR ENTRE FILOSOFOS, MUESTRA QUIEN ESTA EN COLA DEL TENEDOR
     count=0
+    color = "red"
     
 
     def __init__(self):
@@ -58,7 +59,6 @@ class filosofo(threading.Thread):
 
     def comer(self):
         print("FILOSOFO {} COMIENDO".format(self.id))
-        #cambiar_color(self.id, "yellow")
         time.sleep(2) #TIEMPO ARBITRARIO PARA COMER
         print("FILOSOFO {} TERMINO DE COMER".format(self.id))
 
@@ -104,7 +104,7 @@ root = Tk()
 root.geometry("800x600+560+240")
 
 #CREO LAS ETIQUETAS DE LOS FILOSOFOS Y LOS TENEDORES QUE IRÁN CAMBIANDO DE COLOR
-fil1 = crear_texto(root, "Filosofo1", "white", 150, 20)
+fil1 = crear_texto(root, "Filosofo1", filosofo.color 150, 20)
 fil2 = crear_texto(root, "Filosofo2", "white", 250, 80)
 fil3 = crear_texto(root, "Filosofo3", "white", 250, 160)
 fil4 = crear_texto(root, "Filosofo4", "white", 100, 160)
@@ -163,8 +163,3 @@ finalizar.config(font= ("Verdana", 12))
 
 
 root.mainloop()
-
-
-
-
-

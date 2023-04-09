@@ -13,7 +13,7 @@ class filosofo(threading.Thread):
     estado = [] #PARA CONOCER EL ESTADO DE CADA FILOSOFO
     tenedores = [] #ARRAY DE SEMAFOROS PARA SINCRONIZAR ENTRE FILOSOFOS, MUESTRA QUIEN ESTA EN COLA DEL TENEDOR
     count=0
-    color = "red"
+    label = Label
     
 
     def __init__(self):
@@ -30,6 +30,7 @@ class filosofo(threading.Thread):
 
     def pensar(self):
         time.sleep(random.randint(0,5)) #CADA FILOSOFO SE TOMA DISTINTO TIEMPO PARA PENSAR, ALEATORIO
+        self.label.config(bg="white")
 
     def derecha(self,i):
         return (i-1)%N #BUSCAMOS EL INDICE DE LA DERECHA
@@ -45,41 +46,68 @@ class filosofo(threading.Thread):
     def tomar(self):
         filosofo.semaforo.acquire() #SEÑALA QUE TOMARA LOS TENEDORES (EXCLUSION MUTUA)
         filosofo.estado[self.id] = 'HAMBRIENTO'
+        self.label.config(bg="green")
         self.verificar(self.id) #VERIFICA SUS VECINOS, SI NO PUEDE COMER NO SE BLOQUEARA EN EL SIGUIENTE ACQUIRE
         filosofo.semaforo.release() #SEÑALA QUE YA DEJO DE INTENTAR TOMAR LOS TENEDORES (CAMBIAR EL ARRAY ESTADO)
         filosofo.tenedores[self.id].acquire() #SOLO SI PODIA TOMARLOS SE BLOQUEARA CON ESTADO COMIENDO
+        
 
     def soltar(self):
         filosofo.semaforo.acquire() #SEÑALA QUE SOLTARA LOS TENEDORES
         filosofo.estado[self.id] = 'PENSANDO'
-        #cambiar_color(self.id, "white")
+        self.label.config(bg="white")
         self.verificar(self.izquierda(self.id))
         self.verificar(self.derecha(self.id))
         filosofo.semaforo.release() #YA TERMINO DE MANIPULAR TENEDORES
+        
 
     def comer(self):
         print("FILOSOFO {} COMIENDO".format(self.id))
+        self.label.config(bg="yellow")
         time.sleep(2) #TIEMPO ARBITRARIO PARA COMER
         print("FILOSOFO {} TERMINO DE COMER".format(self.id))
+        
 
-    def run(self):
+    def run(self):  
         for i in range(TIEMPO_TOTAL):
             self.pensar() #EL FILOSOFO PIENSA
             self.tomar() #AGARRA LOS TENEDORES CORRESPONDIENTES
             self.comer() #COME
             self.soltar() #SUELTA LOS TENEDORES
 
+
+
 def main():
     
     lista=[]
-    for i in range(N):
-        lista.append(filosofo()) #AGREGA UN FILOSOFO A LA LISTA
+    socrates = filosofo()
+    fil1 = crear_texto(root, "Socrates", "pink", 150, 20)
+    socrates.setLabel(fil1)
+    lista.append(socrates) #AGREGA UN FILOSOFO A LA LISTA
+
+    platon = filosofo()
+    fil2 = crear_texto(root, "Platón", "pink", 250, 80)
+    platon.setLabel(fil2)
+    lista.append(platon)
+
+    aristoteles = filosofo()
+    fil3 = crear_texto(root, "Aristóteles", "pink", 250, 160)
+    aristoteles.setLabel(fil3)
+    lista.append(aristoteles)
+
+    descartes = filosofo()
+    fil4 = crear_texto(root, "Descartes", "pink", 100, 160)
+    descartes.setLabel(fil4)
+    lista.append(descartes)
+
+    marx = filosofo()
+    fil5 = crear_texto(root, "Marx", "pink", 50, 80)
+    marx.setLabel(fil5)
+    lista.append(marx)
 
     for f in lista:
         f.start() #ES EQUIVALENTE A RUN()
 
-
-    
 
 
 def cerrar_ventana():
@@ -104,11 +132,6 @@ root = Tk()
 root.geometry("800x600+560+240")
 
 #CREO LAS ETIQUETAS DE LOS FILOSOFOS Y LOS TENEDORES QUE IRÁN CAMBIANDO DE COLOR
-fil1 = crear_texto(root, "Filosofo1", filosofo.color, 150, 20)
-fil2 = crear_texto(root, "Filosofo2", "white", 250, 80)
-fil3 = crear_texto(root, "Filosofo3", "white", 250, 160)
-fil4 = crear_texto(root, "Filosofo4", "white", 100, 160)
-fil5 = crear_texto(root, "Filosofo5", "white", 50, 80)
 ten1 = crear_texto(root, "1", "gray", 300, 30)
 ten2 = crear_texto(root, "2", "gray", 300, 120)
 ten3 = crear_texto(root, "3", "gray", 210, 160)
@@ -160,6 +183,5 @@ iniciar.config(font= ("Verdana", 12))
 finalizar = Button(root, text= "SALIR", command= cerrar_ventana)
 finalizar.place(x = 300,  y = 250)
 finalizar.config(font= ("Verdana", 12))
-
 
 root.mainloop()

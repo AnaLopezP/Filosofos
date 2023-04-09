@@ -104,7 +104,7 @@ root = Tk()
 root.geometry("800x600+560+240")
 
 #CREO LAS ETIQUETAS DE LOS FILOSOFOS Y LOS TENEDORES QUE IRÁN CAMBIANDO DE COLOR
-fil1 = crear_texto(root, "Filosofo1", filosofo.color 150, 20)
+fil1 = crear_texto(root, "Filosofo1", filosofo.color, 150, 20)
 fil2 = crear_texto(root, "Filosofo2", "white", 250, 80)
 fil3 = crear_texto(root, "Filosofo3", "white", 250, 160)
 fil4 = crear_texto(root, "Filosofo4", "white", 100, 160)

@@ -4,6 +4,7 @@ import random
 import threading
 from tkinter import *
 from tkinter import scrolledtext as sc
+from tkinter import ttk
 
 N = 5
 TIEMPO_TOTAL = 3
@@ -14,7 +15,7 @@ class filosofo(threading.Thread):
     tenedores = [] #ARRAY DE SEMAFOROS PARA SINCRONIZAR ENTRE FILOSOFOS, MUESTRA QUIEN ESTA EN COLA DEL TENEDOR
     labelTenedores = []
     count=0
-    label = Label
+    label = Label #ATRIBUTO DEL COLOR DEL FILOSOFO ASOCIADO A CADA FILOSOFO
     labelten = Label
     
     def getLabel(self):
@@ -33,9 +34,12 @@ class filosofo(threading.Thread):
         filosofo.estado.append('PENSANDO') #EL FILOSOFO ENTRA A LA MESA EN ESTADO PENSANDO
         filosofo.tenedores.append(threading.Semaphore(0)) #AGREGA EL SEMAFORO DE SU TENEDOR( TENEDOR A LA IZQUIERDA)
         print("FILOSOFO {0} - PENSANDO".format(self.id))
+        scroll.insert(index=INSERT, chars = "\nFILOSOFO {0} - PENSANDO".format(self.id))
         
     def __del__(self):
+        self.labelten[self.id].config(bg = "gray")
         print("FILOSOFO {0} - Se para de la mesa".format(self.id))  #NECESARIO PARA SABER CUANDO TERMINA EL THREAD
+        scroll.insert(index=INSERT, chars = "\nFILOSOFO {0} - Se para de la mesa".format(self.id))
         
 
     def pensar(self):
@@ -51,8 +55,10 @@ class filosofo(threading.Thread):
     def verificar(self,i):
         if filosofo.estado[i] == 'HAMBRIENTO' and filosofo.estado[self.izquierda(i)] != 'COMIENDO' and filosofo.estado[self.derecha(i)] != 'COMIENDO':
             filosofo.estado[i]='COMIENDO'
+            self.labelten[self.id].config(bg = "gray")
             filosofo.tenedores[i].release()  #SI SUS VECINOS NO ESTAN COMIENDO AUMENTA EL SEMAFORO DEL TENEDOR Y CAMBIA SU ESTADO A COMIENDO
-            self.labelten[i].config(bg = "gray")
+            print("Liberando semaforo self.id " + str(i))
+            
             
         
     def tomar(self):
@@ -75,61 +81,57 @@ class filosofo(threading.Thread):
 
     def comer(self):
         print("FILOSOFO {} COMIENDO".format(self.id))
+        scroll.insert(index=INSERT, chars = "\nFILOSOFO {} COMIENDO".format(self.id))
         self.label.config(bg="yellow")
         time.sleep(2) #TIEMPO ARBITRARIO PARA COMER
         print("FILOSOFO {} TERMINO DE COMER".format(self.id))
-        
+        scroll.insert(index=INSERT, chars = "\nFILOSOFO {} TERMINO DE COMER".format(self.id))
 
     def run(self):  
         for i in range(TIEMPO_TOTAL):
             self.pensar() #EL FILOSOFO PIENSA
-            print("Tras pensar labelten es: " + str(self.labelten))
+            #print("Tras pensar labelten es: " + str(self.labelten))
             self.tomar() #AGARRA LOS TENEDORES CORRESPONDIENTES
-            print("Tras tomar labelten es: " + str(self.labelten))
+            #print("Tras tomar labelten es: " + str(self.labelten))
             self.comer() #COME
-            print("Tras comer labelten es: " + str(self.labelten))
+            #print("Tras comer labelten es: " + str(self.labelten))
             self.soltar() #SUELTA LOS TENEDORES
-            print("Tras soltar labelten es: " + str(self.labelten))
+            #print("Tras soltar labelten es: " + str(self.labelten))
 
 
 def main():
-    #ten1 = crear_texto(root, "1", "gray", 300, 30)
-    #ten2 = crear_texto(root, "2", "gray", 300, 120)
-    #ten3 = crear_texto(root, "3", "gray", 210, 160)
-    #ten4 = crear_texto(root, "4", "gray", 100, 120)
-    #ten5 = crear_texto(root, "5", "gray", 100, 30)
     lista=[]
     listaten = []
     socrates = filosofo()
-    fil1 = crear_texto(root, "Socrates", "pink", 150, 20)
+    fil1 = crear_texto(root, "Filosofo 0", "pink", 150, 20)
     ten1 = crear_texto(root, "1", "gray", 300, 30)
     socrates.setLabel(fil1)
     listaten.append(ten1)
     lista.append(socrates) #AGREGA UN FILOSOFO A LA LISTA
 
     platon = filosofo()
-    fil2 = crear_texto(root, "Platón", "pink", 250, 80)
+    fil2 = crear_texto(root, "Filosofo 1", "pink", 250, 80)
     ten2 = crear_texto(root, "2", "gray", 300, 120)
     platon.setLabel(fil2)
     listaten.append(ten2)
     lista.append(platon)
 
     aristoteles = filosofo()
-    fil3 = crear_texto(root, "Aristóteles", "pink", 250, 160)
+    fil3 = crear_texto(root, "Filosofo 2", "pink", 250, 160)
     ten3 = crear_texto(root, "3", "gray", 210, 160)
     listaten.append(ten3)
     aristoteles.setLabel(fil3)
     lista.append(aristoteles)
 
     descartes = filosofo()
-    fil4 = crear_texto(root, "Descartes", "pink", 100, 160)
+    fil4 = crear_texto(root, "Filosofo 3", "pink", 100, 160)
     ten4 = crear_texto(root, "4", "gray", 100, 120)
     listaten.append(ten4)
     descartes.setLabel(fil4)
     lista.append(descartes)
 
     marx = filosofo()
-    fil5 = crear_texto(root, "Marx", "pink", 50, 80)
+    fil5 = crear_texto(root, "Filosofo 4", "pink", 50, 80)
     ten5 = crear_texto(root, "5", "gray", 100, 30)
     listaten.append(ten5)
     marx.setLabel(fil5)
@@ -189,17 +191,30 @@ scroll.place(x = 10, y = 300)
 #CREO LA RECOPILACIÓN DE CUÁNTAS VECES COME CADA UNO
 reg = Label(root, text = "Cuántas veces come cada uno")
 reg.place(x = 500, y =300)
-f1 = Label(root, text= "Filósofo 1").place(x = 500, y = 330)
-f2 = Label(root, text= "Filósofo 2").place(x = 500, y = 360)
-f3 = Label(root, text= "Filósofo 3").place(x = 500, y = 390)
-f4 = Label(root, text= "Filósofo 4").place(x = 500, y = 420)
-f5 = Label(root, text= "Filósofo 5").place(x = 500, y = 450)
+f1 = Label(root, text= "Filósofo 0").place(x = 500, y = 330)
+f2 = Label(root, text= "Filósofo 1").place(x = 500, y = 360)
+f3 = Label(root, text= "Filósofo 2").place(x = 500, y = 390)
+f4 = Label(root, text= "Filósofo 3").place(x = 500, y = 420)
+f5 = Label(root, text= "Filósofo 4").place(x = 500, y = 450)
 
-e1 = Entry(root).place(x = 600, y = 330)
-e2 = Entry(root).place(x = 600, y = 360)
-e3 = Entry(root).place(x = 600, y = 390)
-e4 = Entry(root).place(x = 600, y = 420)
-e5 = Entry(root).place(x = 600, y = 450)
+i = 0
+e1 = Entry(root)
+e1.place(x = 600, y = 330)
+e1.insert(0, i)
+e2 = Entry(root)
+e2.place(x = 600, y = 360)
+e2.insert(0, i)
+e3 = Entry(root)
+e3.place(x = 600, y = 390)
+e3.insert(0, i)
+e4 = Entry(root)
+e4.place(x = 600, y = 420)
+e4.insert(0, i)
+e5 = Entry(root)
+e5.place(x = 600, y = 450)
+e5.insert(0, i)
+
+
 
 #CREO LOS BOTONES DE INICAR Y QUITAR
 iniciar = Button(root, text= "INICIAR", command= main)

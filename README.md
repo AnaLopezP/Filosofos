@@ -246,5 +246,5 @@ finalizar.config(font= ("Verdana", 12))
 root.mainloop()
 ```
 
-#CAPTURA DEL RESULTADO
+# CAPTURA DEL RESULTADO
 ![Captura](Captura_Filosofos.png)

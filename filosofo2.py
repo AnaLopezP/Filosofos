@@ -13,10 +13,11 @@ class filosofo(threading.Thread):
     semaforo = threading.Lock() #SEMAFORO BINARIO ASEGURA LA EXCLUSION MUTUA
     estado = [] #PARA CONOCER EL ESTADO DE CADA FILOSOFO
     tenedores = [] #ARRAY DE SEMAFOROS PARA SINCRONIZAR ENTRE FILOSOFOS, MUESTRA QUIEN ESTA EN COLA DEL TENEDOR
-    labelTenedores = []
     count=0
     label = Label #ATRIBUTO DEL COLOR DEL FILOSOFO ASOCIADO A CADA FILOSOFO
     labelten = Label
+    entryet = Entry
+    contador = 0
     
     def getLabel(self):
         return self.label
@@ -26,6 +27,9 @@ class filosofo(threading.Thread):
 
     def setLabelten(self, labelten):
         self.labelten = labelten
+
+    def setEntryet(self, entryet):
+        self.entryet = entryet
 
     def __init__(self):
         super().__init__()      #HERENCIA
@@ -86,20 +90,20 @@ class filosofo(threading.Thread):
         time.sleep(2) #TIEMPO ARBITRARIO PARA COMER
         print("FILOSOFO {} TERMINO DE COMER".format(self.id))
         scroll.insert(index=INSERT, chars = "\nFILOSOFO {} TERMINO DE COMER".format(self.id))
+        self.entryet[self.id].delete(0)
+        self.entryet[self.id].insert(0, self.contador + 1)
+        self.contador += 1
 
     def run(self):  
         for i in range(TIEMPO_TOTAL):
             self.pensar() #EL FILOSOFO PIENSA
-            #print("Tras pensar labelten es: " + str(self.labelten))
             self.tomar() #AGARRA LOS TENEDORES CORRESPONDIENTES
-            #print("Tras tomar labelten es: " + str(self.labelten))
             self.comer() #COME
-            #print("Tras comer labelten es: " + str(self.labelten))
             self.soltar() #SUELTA LOS TENEDORES
-            #print("Tras soltar labelten es: " + str(self.labelten))
 
 
 def main():
+    listaet = []
     lista=[]
     listaten = []
     socrates = filosofo()
@@ -137,10 +141,31 @@ def main():
     marx.setLabel(fil5)
     lista.append(marx)
 
-    set
+
+    e1 = Entry(root)
+    e1.place(x = 600, y = 330)
+    listaet.append(e1)
+
+    e2 = Entry(root)
+    e2.place(x = 600, y = 360)
+    listaet.append(e2)
+
+    e3 = Entry(root)
+    e3.place(x = 600, y = 390)
+    listaet.append(e3)
+
+    e4 = Entry(root)
+    e4.place(x = 600, y = 420)
+    listaet.append(e4)
+
+    e5 = Entry(root)
+    e5.place(x = 600, y = 450)
+    listaet.append(e5)
+
 
     for f in lista:
         f.setLabelten(listaten)
+        f.setEntryet(listaet)
         f.start() #ES EQUIVALENTE A RUN()
 
 
@@ -197,22 +222,6 @@ f3 = Label(root, text= "Filósofo 2").place(x = 500, y = 390)
 f4 = Label(root, text= "Filósofo 3").place(x = 500, y = 420)
 f5 = Label(root, text= "Filósofo 4").place(x = 500, y = 450)
 
-i = 0
-e1 = Entry(root)
-e1.place(x = 600, y = 330)
-e1.insert(0, i)
-e2 = Entry(root)
-e2.place(x = 600, y = 360)
-e2.insert(0, i)
-e3 = Entry(root)
-e3.place(x = 600, y = 390)
-e3.insert(0, i)
-e4 = Entry(root)
-e4.place(x = 600, y = 420)
-e4.insert(0, i)
-e5 = Entry(root)
-e5.place(x = 600, y = 450)
-e5.insert(0, i)
 
 
 
